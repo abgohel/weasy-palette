@@ -173,6 +173,39 @@ html[data-theme="brutalist"] {
   --heading-track: -0.01em;
 }
 
+html[data-theme="impeccable"] {
+  --page-bg: #FAF7F4;
+  --page-fg: #181818;
+  --muted: #66605E;
+  --rule: #E6DFDA;
+  --panel: #FFFDFC;
+  --accent: #BC3F7C;
+  --accent-soft: #F7E4ED;
+  --quote-accent: #BC3F7C;
+  --check-accent: #BC3F7C;
+  --link-decoration: none;
+
+  --font-body: "Instrument Sans", "Inter", "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-mono: "Space Grotesk", "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  --font-meta: var(--font-mono);
+
+  --body-size: 10.8pt;
+  --body-line-height: 1.62;
+  --h1-size: 28pt;
+  --h2-size: 15.5pt;
+  --h3-size: 12.4pt;
+  --table-size: 10pt;
+  --lead-size: 12.6pt;
+  --heading-track: -0.01em;
+  --heading-line-height: 1.05;
+  --page-margin-top: 20mm;
+  --page-margin-right: 18mm;
+  --page-margin-bottom: 20mm;
+  --page-margin-left: 18mm;
+  --content-width: 132mm;
+}
+
 @page {
   size: A4;
   margin: var(--page-margin-top) var(--page-margin-right) var(--page-margin-bottom) var(--page-margin-left);

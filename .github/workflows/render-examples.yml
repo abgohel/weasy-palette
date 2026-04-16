@@ -48,6 +48,7 @@ jobs:
           weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
           weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report.pdf --context examples/report-context.json
           weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report-indie-web.pdf --context examples/report-context.json --theme indie-web --title "Quarterly Operations Report"
+          weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report-impeccable.pdf --context examples/report-context.json --theme impeccable --title "Quarterly Operations Report"
 
       - name: Upload rendered PDFs
         uses: actions/upload-artifact@v4

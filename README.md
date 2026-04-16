@@ -35,6 +35,7 @@ For Markdown and Jinja templates, you can choose:
 - `indie-web` - serif personal-site / indie-web feel
 - `retro-neon` - retro cyber-neon dark preset
 - `brutalist` - stark black-and-white minimalism
+- `impeccable` - editorial SaaS style inspired by impeccable.style
 
 ## Installation
 
@@ -80,6 +81,13 @@ weasyprint-flexoki \
   --theme indie-web \
   --title "Quarterly Operations Report"
 
+weasyprint-flexoki \
+  src/weasyprint_flexoki/templates/report.html.j2 \
+  dist/report-impeccable.pdf \
+  --context examples/report-context.json \
+  --theme impeccable \
+  --title "Quarterly Operations Report"
+
 ```
 
 ## Python API
@@ -94,6 +102,12 @@ render_document_to_pdf(
     "dist/report.pdf",
     context_path="examples/report-context.json",
     theme="indie-web",
+)
+render_document_to_pdf(
+    "src/weasyprint_flexoki/templates/report.html.j2",
+    "dist/report-impeccable.pdf",
+    context_path="examples/report-context.json",
+    theme="impeccable",
 )
 ```
 
@@ -193,6 +207,8 @@ weasyprint-flexoki/
 ## Design notes
 
 The default visual language is inspired by **Flexoki** by Steph Ango, adapted here for PDF-first document rendering.
+
+The `impeccable` preset is a separate editorial UI-inspired theme that borrows cues from https://impeccable.style/, including the serif display + clean sans body pairing, soft paper tones, and magenta accent language.
 
 - Upstream repo: https://github.com/kepano/flexoki
 - Project page: https://stephango.com/flexoki
