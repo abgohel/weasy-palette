@@ -38,6 +38,31 @@
   --panel: var(--fx-base-50);
   --accent: var(--fx-blue);
   --accent-soft: #DCE7F4;
+  --quote-accent: var(--fx-orange);
+  --check-accent: var(--fx-green);
+  --link-decoration: none;
+
+  --font-body: "Inter", "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Inter", "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  --font-meta: var(--font-mono);
+
+  --body-size: 11pt;
+  --body-line-height: 1.55;
+  --h1-size: 24pt;
+  --h2-size: 16pt;
+  --h3-size: 12.5pt;
+  --code-size: 0.92em;
+  --table-size: 10.2pt;
+  --lead-size: 12.5pt;
+  --heading-track: -0.02em;
+  --heading-line-height: 1.15;
+
+  --page-margin-top: 18mm;
+  --page-margin-right: 16mm;
+  --page-margin-bottom: 18mm;
+  --page-margin-left: 16mm;
+  --content-width: 100%;
 }
 
 html[data-theme="dark"] {
@@ -48,11 +73,109 @@ html[data-theme="dark"] {
   --panel: var(--fx-base-950);
   --accent: #4385BE;
   --accent-soft: #1F3653;
+  --quote-accent: #D17A2E;
+}
+
+html[data-theme="terminal"] {
+  --page-bg: #101510;
+  --page-fg: #D7F6D0;
+  --muted: #8EB68A;
+  --rule: #2C472C;
+  --panel: #141B14;
+  --accent: #7BE07B;
+  --accent-soft: #182618;
+  --quote-accent: #7BE07B;
+  --check-accent: #7BE07B;
+
+  --font-body: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  --font-heading: var(--font-body);
+  --font-mono: var(--font-body);
+  --font-meta: var(--font-body);
+
+  --body-size: 10.4pt;
+  --body-line-height: 1.6;
+  --h1-size: 22pt;
+  --h2-size: 14.5pt;
+  --h3-size: 12pt;
+  --table-size: 9.6pt;
+  --lead-size: 11.5pt;
+  --heading-track: 0;
+}
+
+html[data-theme="indie-web"] {
+  --page-bg: #FFFFFF;
+  --page-fg: #111111;
+  --muted: #585858;
+  --rule: #D8D8D8;
+  --panel: #F7F7F7;
+  --accent: #1D4ED8;
+  --accent-soft: #E7EEFF;
+  --quote-accent: #111111;
+
+  --font-body: Georgia, "Times New Roman", serif;
+  --font-heading: Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  --font-meta: var(--font-mono);
+
+  --body-size: 11.2pt;
+  --body-line-height: 1.62;
+  --h1-size: 25pt;
+  --h2-size: 16.5pt;
+  --h3-size: 12.8pt;
+  --lead-size: 12.8pt;
+  --content-width: 128mm;
+}
+
+html[data-theme="retro-neon"] {
+  --page-bg: #151226;
+  --page-fg: #F7F3FF;
+  --muted: #C6B8E6;
+  --rule: #473A6D;
+  --panel: #1D1831;
+  --accent: #6EF3FF;
+  --accent-soft: #242348;
+  --quote-accent: #FF54D9;
+  --check-accent: #6EF3FF;
+
+  --font-body: "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  --font-meta: var(--font-mono);
+
+  --body-size: 10.8pt;
+  --body-line-height: 1.55;
+  --h1-size: 25pt;
+  --h2-size: 16pt;
+  --h3-size: 12.5pt;
+}
+
+html[data-theme="brutalist"] {
+  --page-bg: #FFFFFF;
+  --page-fg: #000000;
+  --muted: #4A4A4A;
+  --rule: #000000;
+  --panel: #FFFFFF;
+  --accent: #000000;
+  --accent-soft: #F0F0F0;
+  --quote-accent: #000000;
+  --check-accent: #000000;
+
+  --font-body: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-heading: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-mono: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  --font-meta: var(--font-mono);
+
+  --body-size: 11pt;
+  --body-line-height: 1.48;
+  --h1-size: 26pt;
+  --h2-size: 17pt;
+  --h3-size: 13pt;
+  --heading-track: -0.01em;
 }
 
 @page {
   size: A4;
-  margin: 18mm 16mm 18mm 16mm;
+  margin: var(--page-margin-top) var(--page-margin-right) var(--page-margin-bottom) var(--page-margin-left);
 
   @bottom-right {
     content: counter(page);
@@ -64,9 +187,9 @@ html[data-theme="dark"] {
 html {
   color: var(--page-fg);
   background: var(--page-bg);
-  font-size: 11pt;
-  line-height: 1.55;
-  font-family: "Inter", "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--body-size);
+  line-height: var(--body-line-height);
+  font-family: var(--font-body);
 }
 
 body {
@@ -76,30 +199,31 @@ body {
 }
 
 main {
-  max-width: 100%;
+  max-width: var(--content-width);
 }
 
 h1, h2, h3, h4 {
   color: var(--page-fg);
-  line-height: 1.15;
+  line-height: var(--heading-line-height);
   margin: 0 0 0.55em;
   page-break-after: avoid;
+  font-family: var(--font-heading);
 }
 
 h1 {
-  font-size: 24pt;
-  letter-spacing: -0.02em;
+  font-size: var(--h1-size);
+  letter-spacing: var(--heading-track);
 }
 
 h2 {
-  font-size: 16pt;
+  font-size: var(--h2-size);
   margin-top: 1.6em;
   padding-top: 0.35em;
   border-top: 1px solid var(--rule);
 }
 
 h3 {
-  font-size: 12.5pt;
+  font-size: var(--h3-size);
   margin-top: 1.2em;
 }
 
@@ -108,7 +232,7 @@ p, ul, ol, blockquote, table, pre {
 }
 
 p.lead {
-  font-size: 12.5pt;
+  font-size: var(--lead-size);
   color: var(--muted);
 }
 
@@ -116,11 +240,18 @@ small,
 .meta,
 .caption {
   color: var(--muted);
+  font-family: var(--font-meta);
+}
+
+.eyebrow,
+.meta-label,
+.tag {
+  font-family: var(--font-meta);
 }
 
 a {
   color: var(--accent);
-  text-decoration: none;
+  text-decoration: var(--link-decoration);
 }
 
 strong {
@@ -129,11 +260,11 @@ strong {
 
 code,
 pre {
-  font-family: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
 code {
-  font-size: 0.92em;
+  font-size: var(--code-size);
   background: var(--panel);
   border: 1px solid var(--rule);
   border-radius: 4px;
@@ -151,7 +282,7 @@ pre {
 }
 
 blockquote {
-  border-left: 4px solid var(--fx-orange);
+  border-left: 4px solid var(--quote-accent);
   background: var(--panel);
   padding: 0.8em 1em;
   color: var(--muted);
@@ -160,7 +291,7 @@ blockquote {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10.2pt;
+  font-size: var(--table-size);
 }
 
 th,
@@ -305,7 +436,7 @@ hr {
   content: "✓";
   position: absolute;
   left: 0;
-  color: var(--fx-green);
+  color: var(--check-accent);
   font-weight: 700;
 }
 

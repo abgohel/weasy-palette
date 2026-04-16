@@ -59,7 +59,7 @@ def render_markdown_to_pdf(
     theme: str = "light",
     title: str | None = None,
 ) -> Path:
-    """Render a Markdown file to PDF using the bundled Flexoki stylesheet."""
+    """Render a Markdown file to PDF using the bundled stylesheet and a named theme preset."""
     input_path = Path(input_markdown).resolve()
     output_path = Path(output_pdf).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -89,7 +89,7 @@ def render_template_to_pdf(
     theme: str = "light",
     title: str | None = None,
 ) -> Path:
-    """Render a Jinja HTML template to PDF using the bundled Flexoki stylesheet."""
+    """Render a Jinja HTML template to PDF using the bundled stylesheet and a named theme preset."""
     template_file = Path(template_path).resolve()
     output_path = Path(output_pdf).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)

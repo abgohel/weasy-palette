@@ -14,9 +14,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("output_pdf", help="Path to the output PDF file")
     parser.add_argument(
         "--theme",
-        choices=["light", "dark"],
+        choices=["light", "dark", "terminal", "indie-web", "retro-neon", "brutalist"],
         default="light",
-        help="Theme used for Markdown input (HTML files manage their own theme)",
+        help="Theme used for Markdown or Jinja input (HTML files manage their own theme)",
     )
     parser.add_argument(
         "--title",

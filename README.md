@@ -22,6 +22,7 @@ The result is a PDF style that feels:
 
 - **WeasyPrint pinned to 68.1**
 - **Flexoki-inspired PDF stylesheet**
+- selectable theme presets: `light`, `dark`, `terminal`, `indie-web`, `retro-neon`, `brutalist`
 - **HTML to PDF** rendering
 - **Markdown to PDF** rendering
 - **Jinja template support** for reusable documents
@@ -39,6 +40,17 @@ You can render:
 - `.html`
 - `.md`
 - `.html.j2` with a JSON context file
+
+## Theme presets
+
+For Markdown and Jinja templates, you can choose from:
+
+- `light` — the default Flexoki editorial look
+- `dark` — dark Flexoki for screen-first docs
+- `terminal` — terminal-blog / hacker minimalism
+- `indie-web` — personal-blog serif layout with mono metadata
+- `retro-neon` — retro web / cyber-neon dark preset
+- `brutalist` — stark black-and-white minimalism
 
 ## Installation
 
@@ -71,11 +83,17 @@ weasyprint-flexoki \
   dist/clinical-brief-dark.pdf \
   --theme dark \
   --title "Clinical Brief"
+
+weasyprint-flexoki \
+  examples/clinical-brief.md \
+  dist/clinical-brief-terminal.pdf \
+  --theme terminal \
+  --title "Clinical Brief"
 ```
 
 ### Jinja templates
 
-Render a template with JSON context:
+Render a template with JSON context and any named theme preset:
 
 ```bash
 weasyprint-flexoki \
@@ -100,6 +118,7 @@ render_document_to_pdf(
     "src/weasyprint_flexoki/templates/report.html.j2",
     "dist/report.pdf",
     context_path="examples/report-context.json",
+    theme="indie-web",
 )
 ```
 
