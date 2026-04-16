@@ -37,6 +37,17 @@ For Markdown and Jinja templates, you can choose:
 - `brutalist` - stark black-and-white minimalism
 - `impeccable` - editorial SaaS style inspired by impeccable.style
 
+### Impeccable preset
+
+The `impeccable` theme is inspired by <https://impeccable.style/>.
+
+It pulls from that visual language rather than trying to clone the site literally:
+- serif display headings
+- clean sans body text
+- mono metadata
+- soft paper-toned backgrounds
+- muted neutrals with a magenta accent
+
 ## Installation
 
 ```bash
