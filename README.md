@@ -40,6 +40,14 @@ The repo currently covers these design directions:
 - letter template - clean formal correspondence layout
 - report template - structured business / ops report layout
 
+For the `impeccable` direction, the repo now also includes a small set of reusable component styles derived from the public impeccable codebase and adapted for print:
+
+- mono section markers via `section-number`
+- muted editorial intros via `section-subtitle`
+- framed panels via `frame`
+- category chips via `chip`, `chip-create`, `chip-evaluate`, `chip-refine`, `chip-simplify`, `chip-harden`, `chip-system`
+- magazine-style highlighted text via `pullquote`
+
 ## Theme presets
 
 For Markdown and Jinja templates, you can choose:
@@ -114,6 +122,12 @@ weasyprint-flexoki \
   --theme impeccable \
   --title "Quarterly Operations Report"
 
+weasyprint-flexoki \
+  examples/impeccable-design-notes.md \
+  dist/impeccable-design-notes.pdf \
+  --theme impeccable \
+  --title "Impeccable Design Notes"
+
 ```
 
 ## Python API
@@ -153,6 +167,7 @@ render_document_to_pdf(
 
 ### Markdown
 - `examples/clinical-brief.md`
+- `examples/impeccable-design-notes.md`
 
 ### Templates
 - `src/weasyprint_flexoki/templates/letter.html.j2`
@@ -213,6 +228,7 @@ weasyprint-flexoki/
 │   ├── github-trending-magazine-data.json
 │   ├── github-trending-magazine-print.html
 │   ├── github-trending-magazine.html
+│   ├── impeccable-design-notes.md
 │   ├── letter-context.json
 │   ├── report-context.json
 │   └── template-render-demo.md

@@ -45,6 +45,7 @@ jobs:
           weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
           weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf
           weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief-terminal.pdf --theme terminal --title "Clinical Brief"
+          weasyprint-flexoki examples/impeccable-design-notes.md dist/impeccable-design-notes.pdf --theme impeccable --title "Impeccable Design Notes"
           weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
           weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report.pdf --context examples/report-context.json
           weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report-indie-web.pdf --context examples/report-context.json --theme indie-web --title "Quarterly Operations Report"
