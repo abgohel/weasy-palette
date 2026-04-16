@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" data-theme="{{ theme | default('light') }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <main>
+      <div class="document-header">
+        <span class="eyebrow">{{ eyebrow or 'Curriculum vitae' }}</span>
+        <h1>{{ title }}</h1>
+        {% if subtitle %}<p class="lead">{{ subtitle }}</p>{% endif %}
+      </div>
+
+      {% if profile %}
+      <div class="meta-grid">
+        {% for item in profile %}
+        <div class="meta-item">
+          <span class="meta-label">{{ item['label'] }}</span>
+          <span class="meta-value">{{ item['value'] }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if summary %}
+      <div class="notice">{{ summary }}</div>
+      {% endif %}
+
+      {% if experience %}
+      <h2>Work experience</h2>
+      {% for role in experience %}
+      <div class="card">
+        <strong>{{ role['position'] }}</strong>{% if role.get('institution') %} · {{ role['institution'] }}{% endif %}<br>
+        <span class="meta">{{ role['dates'] }}</span>
+        {% if role.get('body') %}
+          {% for paragraph in role['body'] %}
+          <p>{{ paragraph }}</p>
+          {% endfor %}
+        {% endif %}
+        {% if role.get('items') %}
+        <ul>
+          {% for item in role['items'] %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      {% if education %}
+      <h2>Education and training</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Dates</th>
+            <th>Qualification</th>
+            <th>Institution</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in education %}
+          <tr>
+            <td>{{ row['dates'] }}</td>
+            <td>{{ row['qualification'] }}</td>
+            <td>{{ row['institution'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+
+      {% if expertise or skills %}
+      <div class="two-col">
+        <div class="col">
+          {% if expertise %}
+          <h2>Areas of expertise</h2>
+          <ul class="checklist">
+            {% for item in expertise %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="col">
+          {% if skills %}
+          <h2>Skills and additional information</h2>
+          <ul>
+            {% for item in skills %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if publications %}
+      <h2>Selected publications</h2>
+      <ul>
+        {% for item in publications %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if achievements %}
+      <h2>Selected achievements</h2>
+      <ul>
+        {% for item in achievements %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if links %}
+      <h2>Public links</h2>
+      <ul>
+        {% for item in links %}
+        <li><a href="{{ item['url'] }}">{{ item['label'] }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </main>
+  </body>
+</html>

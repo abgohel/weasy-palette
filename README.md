@@ -21,7 +21,7 @@ WeasyPrint is excellent, but raw HTML-to-PDF output often feels plain. This proj
 - HTML to PDF rendering
 - Markdown to PDF rendering
 - Jinja template to PDF rendering
-- built-in letter and report templates
+- built-in letter, report, and CV templates
 - a generated GitHub trending magazine demo
 - GitHub Actions that render example outputs on CI
 
@@ -79,6 +79,12 @@ weasyprint-flexoki \
   --context examples/report-context.json \
   --theme indie-web \
   --title "Quarterly Operations Report"
+
+weasyprint-flexoki \
+  src/weasyprint_flexoki/templates/cv.html.j2 \
+  dist/cv-public.pdf \
+  --context examples/cv-context.json \
+  --theme indie-web
 ```
 
 ## Python API
@@ -116,12 +122,14 @@ render_document_to_pdf(
 ### Templates
 - `src/weasyprint_flexoki/templates/letter.html.j2`
 - `src/weasyprint_flexoki/templates/report.html.j2`
+- `src/weasyprint_flexoki/templates/cv.html.j2`
 - `src/weasyprint_flexoki/templates/github-trending-magazine-screen.html.j2`
 - `src/weasyprint_flexoki/templates/github-trending-magazine-print.html.j2`
 
 ### Context / generated data
 - `examples/letter-context.json`
 - `examples/report-context.json`
+- `examples/cv-context.json`
 - `examples/github-trending-magazine-data.json`
 
 ## GitHub trending magazine
@@ -205,6 +213,7 @@ This toolkit works especially well for:
 - internal memos
 - clinical briefs
 - formal letters
+- public-safe CVs and bios
 - short reports
 - one-page handouts
 - reusable document templates
