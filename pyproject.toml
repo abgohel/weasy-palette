@@ -13,6 +13,7 @@ authors = [
   { name = "Abhishek Gohel" }
 ]
 dependencies = [
+  "markdown>=3.6",
   "weasyprint==68.1",
 ]
 

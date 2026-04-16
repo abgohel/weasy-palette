@@ -222,6 +222,93 @@ hr {
   margin-bottom: 0.2em;
 }
 
+.document-header {
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 9pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.meta-grid {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 8px 0;
+  margin: 0.8rem -8px 1rem;
+}
+
+.meta-item {
+  display: table-cell;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+}
+
+.meta-label {
+  display: block;
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.meta-value {
+  display: block;
+  font-size: 11pt;
+  font-weight: 600;
+}
+
+.two-col {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 12px 0;
+  margin: 0.6rem -12px 1rem;
+}
+
+.two-col > .col {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.notice {
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.8rem 0.95rem;
+  margin: 1rem 0;
+}
+
+.checklist {
+  list-style: none;
+  padding-left: 0;
+}
+
+.checklist li {
+  padding-left: 1.4rem;
+  position: relative;
+  margin-bottom: 0.45rem;
+}
+
+.checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--fx-green);
+  font-weight: 700;
+}
+
 .accent-red { color: var(--fx-red); }
 .accent-orange { color: var(--fx-orange); }
 .accent-yellow { color: var(--fx-yellow); }

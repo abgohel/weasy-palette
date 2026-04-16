@@ -1,0 +1,43 @@
+name: Render examples
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install project
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          python - <<'PY'
+          import weasyprint
+          print(weasyprint.__version__)
+          assert weasyprint.__version__ == '68.1'
+          PY
+
+      - name: Render sample PDFs
+        run: |
+          mkdir -p dist
+          weasyprint-flexoki examples/article-light.html dist/article-light.pdf
+          weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
+          weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf
+
+      - name: Upload rendered PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-pdfs
+          path: dist/*.pdf
