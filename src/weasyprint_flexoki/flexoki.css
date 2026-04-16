@@ -1,0 +1,232 @@
+/*
+  Flexoki-inspired PDF stylesheet for WeasyPrint.
+  Palette based on the upstream Flexoki project by Steph Ango.
+  Upstream: https://github.com/kepano/flexoki
+  License: MIT
+*/
+
+:root {
+  --fx-paper: #FFFCF0;
+  --fx-base-50: #F2F0E5;
+  --fx-base-100: #E6E4D9;
+  --fx-base-150: #DAD8CE;
+  --fx-base-200: #CECDC3;
+  --fx-base-300: #B7B5AC;
+  --fx-base-400: #9F9D96;
+  --fx-base-500: #878580;
+  --fx-base-600: #6F6E69;
+  --fx-base-700: #575653;
+  --fx-base-800: #403E3C;
+  --fx-base-850: #343331;
+  --fx-base-900: #282726;
+  --fx-base-950: #1C1B1A;
+  --fx-black: #100F0F;
+
+  --fx-red: #AF3029;
+  --fx-orange: #BC5215;
+  --fx-yellow: #AD8301;
+  --fx-green: #66800B;
+  --fx-cyan: #24837B;
+  --fx-blue: #205EA6;
+  --fx-purple: #5E409D;
+  --fx-magenta: #A02F6F;
+
+  --page-bg: var(--fx-paper);
+  --page-fg: var(--fx-black);
+  --muted: var(--fx-base-600);
+  --rule: var(--fx-base-200);
+  --panel: var(--fx-base-50);
+  --accent: var(--fx-blue);
+  --accent-soft: #DCE7F4;
+}
+
+html[data-theme="dark"] {
+  --page-bg: var(--fx-black);
+  --page-fg: var(--fx-base-100);
+  --muted: var(--fx-base-400);
+  --rule: var(--fx-base-800);
+  --panel: var(--fx-base-950);
+  --accent: #4385BE;
+  --accent-soft: #1F3653;
+}
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 18mm 16mm;
+
+  @bottom-right {
+    content: counter(page);
+    color: var(--muted);
+    font-size: 9pt;
+  }
+}
+
+html {
+  color: var(--page-fg);
+  background: var(--page-bg);
+  font-size: 11pt;
+  line-height: 1.55;
+  font-family: "Inter", "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  color: var(--page-fg);
+  background: var(--page-bg);
+}
+
+main {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4 {
+  color: var(--page-fg);
+  line-height: 1.15;
+  margin: 0 0 0.55em;
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: 24pt;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 16pt;
+  margin-top: 1.6em;
+  padding-top: 0.35em;
+  border-top: 1px solid var(--rule);
+}
+
+h3 {
+  font-size: 12.5pt;
+  margin-top: 1.2em;
+}
+
+p, ul, ol, blockquote, table, pre {
+  margin: 0 0 0.9em;
+}
+
+p.lead {
+  font-size: 12.5pt;
+  color: var(--muted);
+}
+
+small,
+.meta,
+.caption {
+  color: var(--muted);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+strong {
+  color: var(--page-fg);
+}
+
+code,
+pre {
+  font-family: "JetBrains Mono", "Iosevka Term", "SFMono-Regular", Consolas, monospace;
+}
+
+code {
+  font-size: 0.92em;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.9em 1em;
+}
+
+blockquote {
+  border-left: 4px solid var(--fx-orange);
+  background: var(--panel);
+  padding: 0.8em 1em;
+  color: var(--muted);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10.2pt;
+}
+
+th,
+td {
+  border: 1px solid var(--rule);
+  padding: 0.45em 0.55em;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--panel);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 1.2em 0;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin: 1rem 0;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 9pt;
+  padding: 0.2em 0.5em;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.kpi-grid {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 8px 0;
+  margin: 1em -8px 1.2em;
+}
+
+.kpi {
+  display: table-cell;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 0.8em;
+}
+
+.kpi .value {
+  display: block;
+  font-size: 18pt;
+  font-weight: 700;
+  margin-bottom: 0.2em;
+}
+
+.accent-red { color: var(--fx-red); }
+.accent-orange { color: var(--fx-orange); }
+.accent-yellow { color: var(--fx-yellow); }
+.accent-green { color: var(--fx-green); }
+.accent-cyan { color: var(--fx-cyan); }
+.accent-blue { color: var(--fx-blue); }
+.accent-purple { color: var(--fx-purple); }
+.accent-magenta { color: var(--fx-magenta); }

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weasyprint-flexoki"
+version = "0.1.0"
+description = "A small starter kit that combines WeasyPrint 68.1 with the Flexoki color system for beautiful PDFs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Abhishek Gohel" }
+]
+dependencies = [
+  "weasyprint==68.1",
+]
+
+[project.scripts]
+weasyprint-flexoki = "weasyprint_flexoki.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+weasyprint_flexoki = ["flexoki.css"]

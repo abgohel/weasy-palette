@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WeasyPrint Flexoki Demo, Light</title>
+  </head>
+  <body>
+    <main>
+      <p class="tag">Light mode</p>
+      <h1>WeasyPrint + Flexoki</h1>
+      <p class="lead">
+        A small starter document that shows how Flexoki can make PDFs feel warm,
+        readable, and less sterile.
+      </p>
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <span class="value accent-blue">68.1</span>
+          <span class="meta">Pinned WeasyPrint version</span>
+        </div>
+        <div class="kpi">
+          <span class="value accent-orange">A4</span>
+          <span class="meta">Default page size</span>
+        </div>
+        <div class="kpi">
+          <span class="value accent-green">Flexoki</span>
+          <span class="meta">Palette + prose styling</span>
+        </div>
+      </div>
+
+      <h2>Why this exists</h2>
+      <p>
+        Most PDF pipelines either look too plain or too corporate. Flexoki gives
+        the page a calmer editorial feel, which works especially well for essays,
+        notes, clinical handouts, and internal briefs.
+      </p>
+
+      <div class="card">
+        <strong>Starter idea:</strong> use this as the base for letters, reports,
+        one-page summaries, or branded patient information sheets.
+      </div>
+
+      <h2>Sample table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Purpose</th>
+            <th>Default accent</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Headings</td>
+            <td>High-contrast structure</td>
+            <td class="accent-blue">Blue</td>
+          </tr>
+          <tr>
+            <td>Blockquotes</td>
+            <td>Editorial callout</td>
+            <td class="accent-orange">Orange</td>
+          </tr>
+          <tr>
+            <td>Code blocks</td>
+            <td>Technical snippets</td>
+            <td class="accent-blue">Blue</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Code sample</h2>
+      <pre><code>from weasyprint_flexoki import render_html_to_pdf
+
+render_html_to_pdf("examples/article-light.html", "dist/article-light.pdf")</code></pre>
+
+      <blockquote>
+        Flexoki is designed for reading and writing on digital screens, but it
+        translates nicely to PDFs because the palette keeps contrast strong
+        without looking harsh.
+      </blockquote>
+    </main>
+  </body>
+</html>
