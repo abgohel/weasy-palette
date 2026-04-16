@@ -1,56 +1,40 @@
 # weasyprint-flexoki
 
-A small toolkit for generating beautiful PDFs with **WeasyPrint 68.1** and the **Flexoki** palette.
+A small toolkit for turning **HTML, Markdown, and Jinja templates** into polished PDFs with **WeasyPrint 68.1**.
 
-It gives you a cleaner default than a plain HTML-to-PDF pipeline, while staying simple enough to use for real work: letters, reports, briefs, handouts, and other prose-heavy documents.
+It started as a Flexoki-flavored PDF starter, but it has grown into a more flexible document kit for:
+- reports
+- letters
+- briefs
+- handouts
+- reusable template-driven documents
+- editorial HTML and magazine-style experiments
 
 ## Why this exists
 
-WeasyPrint is excellent at rendering HTML to PDF, but the default result can feel a little bare. Flexoki gives the output a warmer, calmer, more editorial look without making it fussy.
+WeasyPrint is excellent, but raw HTML-to-PDF output often feels plain. This project gives you better defaults, cleaner templates, and a set of style presets so documents feel intentional instead of merely rendered.
 
-The result is a PDF style that feels:
-- readable
-- print-friendly
-- softer than a typical corporate document
-- structured enough for professional use
+## What you get
 
-## Preview
-
-![WeasyPrint Flexoki preview](assets/preview-light.png)
-
-## Features
-
-- **WeasyPrint pinned to 68.1**
-- **Flexoki-inspired PDF stylesheet**
-- selectable theme presets: `light`, `dark`, `terminal`, `indie-web`, `retro-neon`, `brutalist`
-- **HTML to PDF** rendering
-- **Markdown to PDF** rendering
-- **Jinja template support** for reusable documents
-- built-in example templates for **letters** and **reports**
-- sample **clinical brief** Markdown document
-- auto-generated **GitHub trending magazine** example
-- screen-first **magazine-style HTML demo** with horizontal pagination
-- print/export **magazine PDF** path built with WeasyPrint
-- GitHub Actions workflow that renders examples on push and pull request
-
-## Supported input types
-
-You can render:
-
-- `.html`
-- `.md`
-- `.html.j2` with a JSON context file
+- WeasyPrint pinned to **68.1**
+- one bundled stylesheet with multiple theme presets
+- HTML to PDF rendering
+- Markdown to PDF rendering
+- Jinja template to PDF rendering
+- built-in letter and report templates
+- a generated GitHub trending magazine demo
+- GitHub Actions that render example outputs on CI
 
 ## Theme presets
 
-For Markdown and Jinja templates, you can choose from:
+For Markdown and Jinja templates, you can choose:
 
-- `light` — the default Flexoki editorial look
-- `dark` — dark Flexoki for screen-first docs
-- `terminal` — terminal-blog / hacker minimalism
-- `indie-web` — personal-blog serif layout with mono metadata
-- `retro-neon` — retro web / cyber-neon dark preset
-- `brutalist` — stark black-and-white minimalism
+- `light` - default Flexoki editorial look
+- `dark` - dark Flexoki for screen-first documents
+- `terminal` - terminal-blog / hacker minimalism
+- `indie-web` - serif personal-site / indie-web feel
+- `retro-neon` - retro cyber-neon dark preset
+- `brutalist` - stark black-and-white minimalism
 
 ## Installation
 
@@ -60,7 +44,7 @@ source .venv/bin/activate
 pip install -e .
 ```
 
-## CLI usage
+## Quick start
 
 ### HTML
 
@@ -73,16 +57,6 @@ weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
 
 ```bash
 weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf
-```
-
-Use `--theme` and `--title` for Markdown documents:
-
-```bash
-weasyprint-flexoki \
-  examples/clinical-brief.md \
-  dist/clinical-brief-dark.pdf \
-  --theme dark \
-  --title "Clinical Brief"
 
 weasyprint-flexoki \
   examples/clinical-brief.md \
@@ -93,8 +67,6 @@ weasyprint-flexoki \
 
 ### Jinja templates
 
-Render a template with JSON context and any named theme preset:
-
 ```bash
 weasyprint-flexoki \
   src/weasyprint_flexoki/templates/letter.html.j2 \
@@ -103,8 +75,10 @@ weasyprint-flexoki \
 
 weasyprint-flexoki \
   src/weasyprint_flexoki/templates/report.html.j2 \
-  dist/report.pdf \
-  --context examples/report-context.json
+  dist/report-indie-web.pdf \
+  --context examples/report-context.json \
+  --theme indie-web \
+  --title "Quarterly Operations Report"
 ```
 
 ## Python API
@@ -113,7 +87,7 @@ weasyprint-flexoki \
 from weasyprint_flexoki import render_document_to_pdf
 
 render_document_to_pdf("examples/article-light.html", "dist/article-light.pdf")
-render_document_to_pdf("examples/clinical-brief.md", "dist/clinical-brief.pdf")
+render_document_to_pdf("examples/clinical-brief.md", "dist/clinical-brief.pdf", theme="terminal")
 render_document_to_pdf(
     "src/weasyprint_flexoki/templates/report.html.j2",
     "dist/report.pdf",
@@ -122,29 +96,66 @@ render_document_to_pdf(
 )
 ```
 
+## Supported inputs
+
+- `.html`
+- `.md`
+- `.html.j2` with `--context <json-file>`
+
 ## Included examples
 
-### HTML examples
+### HTML
 - `examples/article-light.html`
 - `examples/article-dark.html`
-- `examples/github-trending-magazine.html` (interactive weekly issue)
-- `examples/github-trending-magazine-print.html` (print/export version)
+- `examples/github-trending-magazine.html`
+- `examples/github-trending-magazine-print.html`
 
-### Generated data snapshot
-- `examples/github-trending-magazine-data.json`
-
-### Markdown example
+### Markdown
 - `examples/clinical-brief.md`
 
-### Jinja templates
+### Templates
 - `src/weasyprint_flexoki/templates/letter.html.j2`
 - `src/weasyprint_flexoki/templates/report.html.j2`
 - `src/weasyprint_flexoki/templates/github-trending-magazine-screen.html.j2`
 - `src/weasyprint_flexoki/templates/github-trending-magazine-print.html.j2`
 
-### Example context files
+### Context / generated data
 - `examples/letter-context.json`
 - `examples/report-context.json`
+- `examples/github-trending-magazine-data.json`
+
+## GitHub trending magazine
+
+The repo includes a generator for a weekly GitHub-trending magazine issue.
+
+It produces:
+- interactive screen HTML
+- print/export HTML
+- JSON issue data
+- PDF export
+
+Run it with:
+
+```bash
+python scripts/generate_github_trending_magazine.py \
+  --period week \
+  --screen-output examples/github-trending-magazine.html \
+  --print-output examples/github-trending-magazine-print.html \
+  --data-output examples/github-trending-magazine-data.json \
+  --pdf-output dist/github-trending-magazine-weekly.pdf
+```
+
+Note:
+- the weekly issue targets **12 repos across 14 pages**
+- if GitHub returns fewer than 12 weekly repos, the generator tops up from the daily feed to preserve the format
+
+## GitHub Actions
+
+The workflow in `.github/workflows/render-examples.yml`:
+- regenerates the weekly magazine assets
+- renders example PDFs
+- runs on push, pull request, and manual dispatch
+- uploads rendered PDFs as artifacts
 
 ## Project structure
 
@@ -178,70 +189,27 @@ weasyprint-flexoki/
 └── pyproject.toml
 ```
 
-## Styling notes
+## Design notes
 
-This project uses the **Flexoki** palette and naming conventions from the upstream Flexoki project by Steph Ango, adapted here for PDF-first document rendering.
+The default visual language is inspired by **Flexoki** by Steph Ango, adapted here for PDF-first document rendering.
 
 - Upstream repo: https://github.com/kepano/flexoki
 - Project page: https://stephango.com/flexoki
 - Upstream license: MIT
 
-This repo does **not** bundle the entire Flexoki repository. It includes a focused stylesheet built for WeasyPrint output.
+This repo does **not** bundle the full Flexoki project. It uses a focused stylesheet and theme system built for WeasyPrint output.
 
-## Typical use cases
+## Good fits
 
-This setup works especially well for:
-
+This toolkit works especially well for:
 - internal memos
-- essays and long-form notes
 - clinical briefs
-- one-page handouts
 - formal letters
-- compact summary reports
-- branded academic or medical PDFs
-- editorial HTML presentations and magazine-style browsing demos
-
-## GitHub trending magazine
-
-Regenerate the weekly issue, the print/export HTML, the data snapshot, and the PDF in one step:
-
-```bash
-python scripts/generate_github_trending_magazine.py \
-  --period week \
-  --screen-output examples/github-trending-magazine.html \
-  --print-output examples/github-trending-magazine-print.html \
-  --data-output examples/github-trending-magazine-data.json \
-  --pdf-output dist/github-trending-magazine-weekly.pdf
-```
-
-What it does:
-- fetches live GitHub trending repos for the selected window
-- defaults to a **weekly** issue
-- keeps the interactive HTML magazine and the print/export HTML in sync
-- writes a JSON snapshot of the issue data
-- renders a PDF export through WeasyPrint
-
-If GitHub returns fewer than 12 repos for the weekly feed, the generator tops up the final slot from the daily feed so the 14-page issue structure stays intact.
-
-## GitHub Actions
-
-The included workflow:
-
-- regenerates the weekly GitHub trending magazine assets
-- renders the example PDFs automatically on push to `main`
-- runs on pull requests
-- supports manual workflow dispatch
-
-Rendered PDFs are uploaded as workflow artifacts.
-
-## Roadmap
-
-Possible next additions:
-
-- frontmatter support for Markdown metadata
-- branded template packs
-- cover-page and footer presets
-- release workflow for packaged builds
+- short reports
+- one-page handouts
+- reusable document templates
+- editorial PDF experiments
+- magazine-style HTML and PDF outputs
 
 ## License
 
