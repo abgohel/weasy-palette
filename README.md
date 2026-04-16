@@ -1,57 +1,92 @@
 # weasyprint-flexoki
 
-A small starter repo that combines **WeasyPrint 68.1** with the **Flexoki** color system to produce warm, editorial, print-friendly PDFs.
+A small toolkit for generating beautiful PDFs with **WeasyPrint 68.1** and the **Flexoki** palette.
 
-It is meant as a clean starting point for:
-- reports
-- essays
-- internal memos
-- Markdown-based briefs
-- one-page handouts
-- branded clinical or academic PDFs
+It gives you a cleaner default than a plain HTML-to-PDF pipeline, while staying simple enough to use for real work: letters, reports, briefs, handouts, and other prose-heavy documents.
+
+## Why this exists
+
+WeasyPrint is excellent at rendering HTML to PDF, but the default result can feel a little bare. Flexoki gives the output a warmer, calmer, more editorial look without making it fussy.
+
+The result is a PDF style that feels:
+- readable
+- print-friendly
+- softer than a typical corporate document
+- structured enough for professional use
 
 ## Preview
 
 ![WeasyPrint Flexoki preview](assets/preview-light.png)
 
-## What you get
+## Features
 
-- `weasyprint==68.1` pinned in `pyproject.toml`
-- a reusable `flexoki.css` stylesheet tuned for PDF output
-- sample light and dark HTML documents
-- Markdown to PDF support built into the CLI
-- Jinja template support for letters and reports
-- a clinical brief example that is closer to real-world handout / summary work
-- a tiny CLI for rendering HTML to PDF with WeasyPrint
-- a small Python API you can call directly
-- a GitHub Actions workflow that renders example PDFs on push and pull requests
+- **WeasyPrint pinned to 68.1**
+- **Flexoki-inspired PDF stylesheet**
+- **HTML to PDF** rendering
+- **Markdown to PDF** rendering
+- **Jinja template support** for reusable documents
+- built-in example templates for **letters** and **reports**
+- sample **clinical brief** Markdown document
+- GitHub Actions workflow that renders examples on push and pull request
 
-## Quick start
+## Supported input types
+
+You can render:
+
+- `.html`
+- `.md`
+- `.html.j2` with a JSON context file
+
+## Installation
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
+```
+
+## CLI usage
+
+### HTML
+
+```bash
 weasyprint-flexoki examples/article-light.html dist/article-light.pdf
 weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
+```
+
+### Markdown
+
+```bash
 weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf
-weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
-weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report.pdf --context examples/report-context.json
 ```
 
-Markdown input supports `--theme` and `--title`:
+Use `--theme` and `--title` for Markdown documents:
 
 ```bash
-weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief-dark.pdf --theme dark --title "Clinical Brief"
+weasyprint-flexoki \
+  examples/clinical-brief.md \
+  dist/clinical-brief-dark.pdf \
+  --theme dark \
+  --title "Clinical Brief"
 ```
 
-Jinja template input supports `--context` with a JSON file:
+### Jinja templates
+
+Render a template with JSON context:
 
 ```bash
-weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
+weasyprint-flexoki \
+  src/weasyprint_flexoki/templates/letter.html.j2 \
+  dist/letter.pdf \
+  --context examples/letter-context.json
+
+weasyprint-flexoki \
+  src/weasyprint_flexoki/templates/report.html.j2 \
+  dist/report.pdf \
+  --context examples/report-context.json
 ```
 
-## Python usage
+## Python API
 
 ```python
 from weasyprint_flexoki import render_document_to_pdf
@@ -65,7 +100,24 @@ render_document_to_pdf(
 )
 ```
 
-## Project layout
+## Included examples
+
+### HTML examples
+- `examples/article-light.html`
+- `examples/article-dark.html`
+
+### Markdown example
+- `examples/clinical-brief.md`
+
+### Jinja templates
+- `src/weasyprint_flexoki/templates/letter.html.j2`
+- `src/weasyprint_flexoki/templates/report.html.j2`
+
+### Example context files
+- `examples/letter-context.json`
+- `examples/report-context.json`
+
+## Project structure
 
 ```text
 weasyprint-flexoki/
@@ -76,9 +128,10 @@ weasyprint-flexoki/
 ├── examples/
 │   ├── article-dark.html
 │   ├── article-light.html
-│   └── clinical-brief.md
+│   ├── clinical-brief.md
 │   ├── letter-context.json
-│   └── report-context.json
+│   ├── report-context.json
+│   └── template-render-demo.md
 ├── src/weasyprint_flexoki/
 │   ├── cli.py
 │   ├── flexoki.css
@@ -89,38 +142,46 @@ weasyprint-flexoki/
 └── pyproject.toml
 ```
 
-## Design notes
+## Styling notes
 
-This repo uses the **Flexoki** palette and naming conventions from the upstream project by Steph Ango, but applies them in a PDF-first way for WeasyPrint.
+This project uses the **Flexoki** palette and naming conventions from the upstream Flexoki project by Steph Ango, adapted here for PDF-first document rendering.
 
-- Upstream project: https://github.com/kepano/flexoki
+- Upstream repo: https://github.com/kepano/flexoki
 - Project page: https://stephango.com/flexoki
 - Upstream license: MIT
 
-This starter kit does **not** bundle the whole upstream repository. It includes a focused stylesheet built around the Flexoki palette for PDF generation.
+This repo does **not** bundle the entire Flexoki repository. It includes a focused stylesheet built for WeasyPrint output.
 
-## Included examples
+## Typical use cases
 
-- `examples/article-light.html` for a light editorial page
-- `examples/article-dark.html` for an on-screen dark variant
-- `examples/clinical-brief.md` for a more practical one-page clinic / report layout
-- `src/weasyprint_flexoki/templates/letter.html.j2` for correspondence
-- `src/weasyprint_flexoki/templates/report.html.j2` for structured summaries
-- matching JSON context files in `examples/`
+This setup works especially well for:
 
-## Why this combo works
+- internal memos
+- essays and long-form notes
+- clinical briefs
+- one-page handouts
+- formal letters
+- compact summary reports
+- branded academic or medical PDFs
 
-WeasyPrint is excellent for HTML-to-PDF workflows, but the default visual result is often too plain. Flexoki gives the output a calmer and more literary feel while keeping contrast strong enough for serious reading.
+## GitHub Actions
 
-That makes this combo especially good for prose-heavy documents where you want something softer than a typical corporate PDF, but still clean and professional.
+The included workflow renders the example PDFs automatically on:
 
-## Ideas for next steps
+- push to `main`
+- pull requests
+- manual workflow dispatch
 
-- Jinja templates for letters and reports
-- branded themes for hospitals, research groups, or newsletters
-- cover pages, footers, and appendix templates
-- optional front matter support for Markdown metadata
-- release workflow that publishes packaged builds
+Rendered PDFs are uploaded as workflow artifacts.
+
+## Roadmap
+
+Possible next additions:
+
+- frontmatter support for Markdown metadata
+- branded template packs
+- cover-page and footer presets
+- release workflow for packaged builds
 
 ## License
 
