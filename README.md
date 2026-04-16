@@ -25,9 +25,9 @@ WeasyPrint is excellent, but raw HTML-to-PDF output often feels plain. This proj
 - a generated GitHub trending magazine demo
 - GitHub Actions that render example outputs on CI
 
-## Theme presets
+## Design styles in this repo
 
-For Markdown and Jinja templates, you can choose:
+The repo currently covers these design directions:
 
 - `light` - default Flexoki editorial look
 - `dark` - dark Flexoki for screen-first documents
@@ -36,6 +36,21 @@ For Markdown and Jinja templates, you can choose:
 - `retro-neon` - retro cyber-neon dark preset
 - `brutalist` - stark black-and-white minimalism
 - `impeccable` - editorial SaaS style inspired by impeccable.style
+- GitHub trending magazine - monochrome, e-ink, full-bleed editorial layout for screen + print
+- letter template - clean formal correspondence layout
+- report template - structured business / ops report layout
+
+## Theme presets
+
+For Markdown and Jinja templates, you can choose:
+
+- `light`
+- `dark`
+- `terminal`
+- `indie-web`
+- `retro-neon`
+- `brutalist`
+- `impeccable`
 
 ### Impeccable preset
 
