@@ -29,9 +29,18 @@ jobs:
           assert weasyprint.__version__ == '68.1'
           PY
 
-      - name: Render sample PDFs
+      - name: Generate weekly GitHub trending magazine
         run: |
           mkdir -p dist
+          python scripts/generate_github_trending_magazine.py \
+            --period week \
+            --screen-output examples/github-trending-magazine.html \
+            --print-output examples/github-trending-magazine-print.html \
+            --data-output examples/github-trending-magazine-data.json \
+            --pdf-output dist/github-trending-magazine-weekly.pdf
+
+      - name: Render sample PDFs
+        run: |
           weasyprint-flexoki examples/article-light.html dist/article-light.pdf
           weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
           weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf

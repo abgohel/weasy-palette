@@ -27,7 +27,9 @@ The result is a PDF style that feels:
 - **Jinja template support** for reusable documents
 - built-in example templates for **letters** and **reports**
 - sample **clinical brief** Markdown document
-- single-file **magazine-style HTML demo** with horizontal pagination
+- auto-generated **GitHub trending magazine** example
+- screen-first **magazine-style HTML demo** with horizontal pagination
+- print/export **magazine PDF** path built with WeasyPrint
 - GitHub Actions workflow that renders examples on push and pull request
 
 ## Supported input types
@@ -106,7 +108,11 @@ render_document_to_pdf(
 ### HTML examples
 - `examples/article-light.html`
 - `examples/article-dark.html`
-- `examples/github-trending-magazine.html` (screen-first magazine demo)
+- `examples/github-trending-magazine.html` (interactive weekly issue)
+- `examples/github-trending-magazine-print.html` (print/export version)
+
+### Generated data snapshot
+- `examples/github-trending-magazine-data.json`
 
 ### Markdown example
 - `examples/clinical-brief.md`
@@ -114,6 +120,8 @@ render_document_to_pdf(
 ### Jinja templates
 - `src/weasyprint_flexoki/templates/letter.html.j2`
 - `src/weasyprint_flexoki/templates/report.html.j2`
+- `src/weasyprint_flexoki/templates/github-trending-magazine-screen.html.j2`
+- `src/weasyprint_flexoki/templates/github-trending-magazine-print.html.j2`
 
 ### Example context files
 - `examples/letter-context.json`
@@ -131,15 +139,21 @@ weasyprint-flexoki/
 │   ├── article-dark.html
 │   ├── article-light.html
 │   ├── clinical-brief.md
+│   ├── github-trending-magazine-data.json
+│   ├── github-trending-magazine-print.html
 │   ├── github-trending-magazine.html
 │   ├── letter-context.json
 │   ├── report-context.json
 │   └── template-render-demo.md
+├── scripts/
+│   └── generate_github_trending_magazine.py
 ├── src/weasyprint_flexoki/
 │   ├── cli.py
 │   ├── flexoki.css
 │   ├── render.py
 │   └── templates/
+│       ├── github-trending-magazine-print.html.j2
+│       ├── github-trending-magazine-screen.html.j2
 │       ├── letter.html.j2
 │       └── report.html.j2
 └── pyproject.toml
@@ -168,13 +182,36 @@ This setup works especially well for:
 - branded academic or medical PDFs
 - editorial HTML presentations and magazine-style browsing demos
 
+## GitHub trending magazine
+
+Regenerate the weekly issue, the print/export HTML, the data snapshot, and the PDF in one step:
+
+```bash
+python scripts/generate_github_trending_magazine.py \
+  --period week \
+  --screen-output examples/github-trending-magazine.html \
+  --print-output examples/github-trending-magazine-print.html \
+  --data-output examples/github-trending-magazine-data.json \
+  --pdf-output dist/github-trending-magazine-weekly.pdf
+```
+
+What it does:
+- fetches live GitHub trending repos for the selected window
+- defaults to a **weekly** issue
+- keeps the interactive HTML magazine and the print/export HTML in sync
+- writes a JSON snapshot of the issue data
+- renders a PDF export through WeasyPrint
+
+If GitHub returns fewer than 12 repos for the weekly feed, the generator tops up the final slot from the daily feed so the 14-page issue structure stays intact.
+
 ## GitHub Actions
 
-The included workflow renders the example PDFs automatically on:
+The included workflow:
 
-- push to `main`
-- pull requests
-- manual workflow dispatch
+- regenerates the weekly GitHub trending magazine assets
+- renders the example PDFs automatically on push to `main`
+- runs on pull requests
+- supports manual workflow dispatch
 
 Rendered PDFs are uploaded as workflow artifacts.
 

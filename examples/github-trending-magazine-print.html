@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>GitHub Trending Magazine Export, Week Issue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <style>
+      @page {
+        size: 1600px 900px;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Source Serif 4", Georgia, serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .page {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      .page.light {
+        background: linear-gradient(180deg, #f2f2ee 0%, #e9e9e4 100%);
+        color: #101010;
+      }
+
+      .page.dark {
+        background: linear-gradient(180deg, #080808 0%, #111111 100%);
+        color: rgba(255, 255, 255, 0.94);
+      }
+
+      .page-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 4vh 4vw 8vh;
+      }
+
+      .cover,
+      .back-cover {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100%;
+      }
+
+      .cover-top,
+      .cover-bottom,
+      .back-cover-top,
+      .back-cover-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2vw;
+      }
+
+      .kicker,
+      .cover-meta,
+      .mini-meta,
+      .repo-meta,
+      .back-note {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: max(12px, 0.95vw);
+        line-height: 1.5;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .page.light .kicker,
+      .page.light .cover-meta,
+      .page.light .mini-meta,
+      .page.light .repo-meta,
+      .page.light .back-note {
+        color: rgba(16, 16, 16, 0.76);
+      }
+
+      .page.dark .kicker,
+      .page.dark .cover-meta,
+      .page.dark .mini-meta,
+      .page.dark .repo-meta,
+      .page.dark .back-note {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .cover-title,
+      .back-title {
+        margin: 0;
+        max-width: 72vw;
+        font-family: "Playfair Display", serif;
+        font-size: 9.3vw;
+        line-height: 0.92;
+        letter-spacing: -0.05em;
+      }
+
+      .cover-deck,
+      .back-deck {
+        max-width: 48vw;
+        margin: 2vh 0 0;
+        font-size: max(17px, 1.38vw);
+        line-height: 1.45;
+      }
+
+      .cover-grid {
+        display: grid;
+        grid-template-columns: 55fr 45fr;
+        align-items: end;
+        gap: 3vw;
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .cover-aside {
+        align-self: end;
+        padding-bottom: 0;
+      }
+
+      .spread {
+        display: grid;
+        grid-template-columns: 55fr 45fr;
+        width: 100%;
+        height: 100%;
+        gap: 2.6vw;
+      }
+
+      .spread-left,
+      .spread-right {
+        position: relative;
+        min-width: 0;
+      }
+
+      .spread-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-right: 1vw;
+      }
+
+      .spread-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-left: 2.2vw;
+      }
+
+      .page.light .spread-right {
+        border-left: 1px solid rgba(16, 16, 16, 0.12);
+      }
+
+      .page.dark .spread-right {
+        border-left: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .rank-ghost {
+        position: absolute;
+        top: -1.5vh;
+        left: -0.2vw;
+        z-index: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 21vw;
+        line-height: 0.8;
+        letter-spacing: -0.08em;
+      }
+
+      .page.light .rank-ghost {
+        color: rgba(16, 16, 16, 0.08);
+      }
+
+      .page.dark .rank-ghost {
+        color: rgba(255, 255, 255, 0.08);
+      }
+
+      .left-content,
+      .right-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .left-content {
+        padding-top: 7vh;
+      }
+
+      .category-tag {
+        display: inline-block;
+        margin-bottom: 2.2vh;
+        padding-bottom: 0.5vh;
+        border-bottom: 1px solid currentColor;
+      }
+
+      .headline {
+        margin: 0 0 2.6vh;
+        font-family: "Playfair Display", serif;
+        font-size: 4.85vw;
+        line-height: 0.96;
+        letter-spacing: -0.045em;
+      }
+
+      .repo-path {
+        margin: 0 0 2vh;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: max(17px, 1.12vw);
+        line-height: 1.45;
+        word-break: break-word;
+      }
+
+      .description {
+        max-width: 40vw;
+        margin: 0 0 2.4vh;
+        font-size: max(17px, 1.22vw);
+        line-height: 1.42;
+      }
+
+      .page.light .description {
+        color: rgba(16, 16, 16, 0.9);
+      }
+
+      .page.dark .description {
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .star-count {
+        margin: 0 0 1.4vh;
+        font-family: "Playfair Display", serif;
+        font-size: 6.1vw;
+        line-height: 0.88;
+        letter-spacing: -0.05em;
+      }
+
+      .stat-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1vw 1.4vw;
+        margin-bottom: 2.2vh;
+      }
+
+      .stat-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.7em;
+        padding: 0.25em 0;
+      }
+
+      .callout {
+        margin-top: 1vh;
+        padding: 1.5vh 1.1vw 1.7vh 1.3vw;
+        border-left: 4px solid currentColor;
+      }
+
+      .page.light .callout {
+        background: rgba(16, 16, 16, 0.06);
+      }
+
+      .page.dark .callout {
+        background: rgba(255, 255, 255, 0.09);
+      }
+
+      .callout-label {
+        display: block;
+        margin-bottom: 1.2vh;
+      }
+
+      .callout p {
+        margin: 0;
+        font-size: max(16px, 1.14vw);
+        line-height: 1.42;
+      }
+
+      .page.light .callout p {
+        color: rgba(16, 16, 16, 0.82);
+      }
+
+      .page.dark .callout p {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page dark">
+      <div class="page-inner cover">
+        <div class="cover-top">
+          <div class="kicker">GitHub Trends / WEEK Issue / 16 Apr 2026</div>
+          <div class="cover-meta">Monochrome export / print-ready magazine</div>
+        </div>
+        <div class="cover-grid">
+          <div>
+            <h1 class="cover-title">GitHub Trending Magazine</h1>
+            <p class="cover-deck">A full-bleed export edition built from the same weekly issue data: 12 trending repos, editorial framing, and practical notes on how each one could matter to your work.</p>
+          </div>
+          <div class="cover-aside">
+            <div class="mini-meta">Page 01 / Cover</div>
+            <p class="cover-deck">This print/export variant keeps the same monochrome magazine system but stacks pages vertically so it can render cleanly to PDF.</p>
+          </div>
+        </div>
+        <div class="cover-bottom">
+          <div class="cover-meta">Fonts / Playfair Display, Source Serif 4, IBM Plex Mono</div>
+          <div class="cover-meta">Generated / 16 Apr 2026 10:08 UTC</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page light">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">01</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Agent discipline</div>
+              <h2 class="headline">The hottest repo is a reminder that prompting is still product design.</h2>
+              <p class="repo-path">forrestchang/andrej-karpathy-skills</p>
+              <p class="description">A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 02 / Rank 01</div>
+              <div class="star-count">46,268</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">General</span>
+                <span class="stat-pill">30,919 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>For your work, treat this as raw operating method, not scripture. Lift the parts that sharpen agent discipline, review loops, and memory hygiene, then fold those patterns into Axon instead of copying the whole aesthetic.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/forrestchang/andrej-karpathy-skills</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page dark">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">02</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Agent tooling</div>
+              <h2 class="headline">Trending agent repos are really arguments about how work should be structured.</h2>
+              <p class="repo-path">NousResearch/hermes-agent</p>
+              <p class="description">The agent that grows with you</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 03 / Rank 02</div>
+              <div class="star-count">91,881</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Python</span>
+                <span class="stat-pill">53,110 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Treat this as workflow inspiration. Ask whether it improves repeatability, sharper task boundaries, or better handoffs, then borrow only the pieces that hold up under real use.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/NousResearch/hermes-agent</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page light">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">03</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Agent tooling</div>
+              <h2 class="headline">Trending agent repos are really arguments about how work should be structured.</h2>
+              <p class="repo-path">multica-ai/multica</p>
+              <p class="description">The open-source managed agents platform. Turn coding agents into real teammates — assign tasks, track progress, compound skills.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 04 / Rank 03</div>
+              <div class="star-count">14,109</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">TypeScript</span>
+                <span class="stat-pill">10,864 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Treat this as workflow inspiration. Ask whether it improves repeatability, sharper task boundaries, or better handoffs, then borrow only the pieces that hold up under real use.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/multica-ai/multica</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page dark">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">04</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Market models</div>
+              <h2 class="headline">Market-themed repos often double as orchestration experiments in disguise.</h2>
+              <p class="repo-path">shiyu-coder/Kronos</p>
+              <p class="description">Kronos: A Foundation Model for the Language of Financial Markets</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 05 / Rank 04</div>
+              <div class="star-count">18,501</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Python</span>
+                <span class="stat-pill">6,486 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>You do not need the finance wrapper. The value is in the orchestration pattern, the evaluation loop, and the way specialized components are forced to justify decisions.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/shiyu-coder/Kronos</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page light">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">05</div>
+            <div class="left-content">
+              <div class="kicker category-tag">General</div>
+              <h2 class="headline">The pattern under the repo matters more than the hype around it.</h2>
+              <p class="repo-path">coleam00/Archon</p>
+              <p class="description">The first open-source harness builder for AI coding. Make AI coding deterministic and repeatable.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 06 / Rank 05</div>
+              <div class="star-count">18,305</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">TypeScript</span>
+                <span class="stat-pill">4,263 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Ask what reusable system pattern sits under the surface, then decide whether it belongs anywhere in your own stack.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/coleam00/Archon</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page dark">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">06</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Document pipeline</div>
+              <h2 class="headline">The mundane document layer is where a lot of useful AI work actually lands.</h2>
+              <p class="repo-path">microsoft/markitdown</p>
+              <p class="description">Python tool for converting files and office documents to Markdown.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 07 / Rank 06</div>
+              <div class="star-count">109,911</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Python</span>
+                <span class="stat-pill">15,790 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>This is practical leverage for your real workflow. Keep it in mind whenever notes, office files, or reports need to become Markdown before they can feed search, summarization, or clean publication pipelines.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/microsoft/markitdown</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page light">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">07</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Agent tooling</div>
+              <h2 class="headline">Trending agent repos are really arguments about how work should be structured.</h2>
+              <p class="repo-path">HKUDS/DeepTutor</p>
+              <p class="description">"DeepTutor: Agent-Native Personalized Learning Assistant"</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 08 / Rank 07</div>
+              <div class="star-count">18,586</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Python</span>
+                <span class="stat-pill">5,500 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Treat this as workflow inspiration. Ask whether it improves repeatability, sharper task boundaries, or better handoffs, then borrow only the pieces that hold up under real use.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/HKUDS/DeepTutor</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page dark">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">08</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Agent tooling</div>
+              <h2 class="headline">Trending agent repos are really arguments about how work should be structured.</h2>
+              <p class="repo-path">addyosmani/agent-skills</p>
+              <p class="description">Production-grade engineering skills for AI coding agents.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 09 / Rank 08</div>
+              <div class="star-count">16,192</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Shell</span>
+                <span class="stat-pill">6,693 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Treat this as workflow inspiration. Ask whether it improves repeatability, sharper task boundaries, or better handoffs, then borrow only the pieces that hold up under real use.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/addyosmani/agent-skills</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page light">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">09</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Memory systems</div>
+              <h2 class="headline">Memory layers are becoming the product, not just a feature bolted onto agents.</h2>
+              <p class="repo-path">thedotmack/claude-mem</p>
+              <p class="description">A Claude Code plugin that automatically captures everything Claude does during your coding sessions, compresses it with AI (using Claude's agent-sdk), and injects relevant context back into future sessions.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 10 / Rank 09</div>
+              <div class="star-count">58,546</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">TypeScript</span>
+                <span class="stat-pill">10,779 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>This maps directly onto Axon. Focus on retrieval timing, compression strategy, and what deserves to persist, but keep your own standard higher around signal quality and privacy boundaries.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/thedotmack/claude-mem</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page dark">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">10</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Multi-agent finance</div>
+              <h2 class="headline">Finance demos keep doubling as orchestration labs wearing a market wrapper.</h2>
+              <p class="repo-path">virattt/ai-hedge-fund</p>
+              <p class="description">An AI Hedge Fund Team</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 11 / Rank 10</div>
+              <div class="star-count">55,458</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Python</span>
+                <span class="stat-pill">4,314 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Ignore the hedge-fund packaging if needed. The useful part is the role split, decision checkpoints, and evaluation structure, which are all portable to research, review, and agent collaboration work.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/virattt/ai-hedge-fund</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page light">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">11</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Document pipeline</div>
+              <h2 class="headline">The boring document layer keeps winning because real work still runs through files.</h2>
+              <p class="repo-path">TapXWorld/ChinaTextbook</p>
+              <p class="description">所有小初高、大学PDF教材。</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 12 / Rank 11</div>
+              <div class="star-count">69,576</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">Roff</span>
+                <span class="stat-pill">2,756 stars this week</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>This is practical infrastructure for your actual work. Anything that makes messy files easier to convert, search, clean, and republish can pay off across briefs, handouts, and research notes.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/TapXWorld/ChinaTextbook</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="page dark">
+      <div class="page-inner">
+        <div class="spread">
+          <div class="spread-left">
+            <div class="rank-ghost">12</div>
+            <div class="left-content">
+              <div class="kicker category-tag">Spatial tools</div>
+              <h2 class="headline">A 3D editor trends because interface can still beat abstraction.</h2>
+              <p class="repo-path">pascalorg/editor</p>
+              <p class="description">Create and share 3D architectural projects.</p>
+            </div>
+          </div>
+          <div class="spread-right">
+            <div class="right-content">
+              <div class="mini-meta">Page 13 / Rank 12</div>
+              <div class="star-count">13,014</div>
+              <div class="stat-line repo-meta">
+                <span class="stat-pill">TypeScript</span>
+                <span class="stat-pill">1,391 stars today</span>
+              </div>
+              <div class="callout">
+                <span class="callout-label mini-meta">How to use this</span>
+                <p>Even if you never use it directly, this is worth reading as interface inspiration. Dense information sometimes gets easier when people manipulate space instead of scrolling through flat panes and lists.</p>
+              </div>
+            </div>
+            <div class="repo-meta">https://github.com/pascalorg/editor</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page dark">
+      <div class="page-inner back-cover">
+        <div class="back-cover-top">
+          <div class="kicker">Back cover / WEEK Issue / 16 Apr 2026</div>
+          <div class="cover-meta">12 repos / 14 pages / monochrome only</div>
+        </div>
+        <div>
+          <h2 class="back-title">What matters is the pattern, not the hype.</h2>
+          <p class="back-deck">If a repo stays with you after the page turn, translate it into one sentence: what system behavior, workflow pattern, or design instinct does it sharpen for your own work?</p>
+        </div>
+        <div class="back-cover-bottom">
+          <div class="back-note">This edition is designed for PDF export and paged reading.</div>
+          <div class="back-note">GitHub returned 11 weekly repos, so this issue tops up the final 1 slot with current daily picks to preserve the 14-page format.</div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
