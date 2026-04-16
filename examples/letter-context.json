@@ -1,0 +1,22 @@
+{
+  "title": "Follow-up Letter",
+  "eyebrow": "Professional correspondence",
+  "subtitle": "A simple Jinja-driven letter layout for polished PDF output.",
+  "sender_name": "Dr. Maya Shah",
+  "sender_role": "Consultant Neurologist",
+  "recipient_name": "Dr. R. Patel",
+  "date": "16 Apr 2026",
+  "subject": "Clinic follow-up and treatment plan",
+  "greeting": "Dear Dr. Patel,",
+  "paragraphs": [
+    "Thank you for reviewing our shared patient. I am writing to summarise the current treatment plan and the most relevant follow-up points from the neurology visit.",
+    "Overall stability has improved since the previous review. There have been no prolonged breakthrough episodes, and adherence strategies are now in place.",
+    "Please let me know if there is any interval deterioration, especially new focal deficits, prolonged seizure activity, or clear medication intolerance."
+  ],
+  "bullets": [
+    "Continue current antiseizure medication without abrupt interruption",
+    "Escalate promptly if seizure frequency increases",
+    "Review again in 6 to 8 weeks or sooner if red flags emerge"
+  ],
+  "closing": "With thanks and best regards,"
+}

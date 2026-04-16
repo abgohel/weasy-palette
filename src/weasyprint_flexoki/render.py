@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import re
+import json
 from html import escape
 from pathlib import Path
 
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 import markdown
 from weasyprint import CSS, HTML
 
@@ -72,14 +74,65 @@ def render_markdown_to_pdf(
     return output_path
 
 
+def _load_context(context_path: str | Path | None) -> dict:
+    if context_path is None:
+        return {}
+    path = Path(context_path).resolve()
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def render_template_to_pdf(
+    template_path: str | Path,
+    output_pdf: str | Path,
+    *,
+    context_path: str | Path | None = None,
+    theme: str = "light",
+    title: str | None = None,
+) -> Path:
+    """Render a Jinja HTML template to PDF using the bundled Flexoki stylesheet."""
+    template_file = Path(template_path).resolve()
+    output_path = Path(output_pdf).resolve()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    env = Environment(
+        loader=FileSystemLoader(str(template_file.parent)),
+        autoescape=select_autoescape(["html", "xml", "j2"]),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    template = env.get_template(template_file.name)
+    context = _load_context(context_path)
+    inferred_name = template_file.name
+    for suffix in (".j2", ".jinja", ".jinja2", ".html"):
+        if inferred_name.endswith(suffix):
+            inferred_name = inferred_name[: -len(suffix)]
+    context.setdefault("theme", theme)
+    context.setdefault("title", title or inferred_name.replace("-", " ").replace("_", " ").title())
+    html_document = template.render(**context)
+
+    html = HTML(string=html_document, base_url=str(template_file.parent))
+    css = CSS(filename=str(DEFAULT_STYLESHEET))
+    html.write_pdf(str(output_path), stylesheets=[css])
+    return output_path
+
+
 def render_document_to_pdf(
     input_path: str | Path,
     output_pdf: str | Path,
     *,
     theme: str = "light",
     title: str | None = None,
+    context_path: str | Path | None = None,
 ) -> Path:
     source_path = Path(input_path)
     if source_path.suffix.lower() in {".md", ".markdown"}:
         return render_markdown_to_pdf(source_path, output_pdf, theme=theme, title=title)
+    if source_path.suffix.lower() in {".j2", ".jinja", ".jinja2"}:
+        return render_template_to_pdf(
+            source_path,
+            output_pdf,
+            context_path=context_path,
+            theme=theme,
+            title=title,
+        )
     return render_html_to_pdf(source_path, output_pdf)

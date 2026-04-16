@@ -35,6 +35,8 @@ jobs:
           weasyprint-flexoki examples/article-light.html dist/article-light.pdf
           weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
           weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf
+          weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
+          weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report.pdf --context examples/report-context.json
 
       - name: Upload rendered PDFs
         uses: actions/upload-artifact@v4

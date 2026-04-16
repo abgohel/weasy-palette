@@ -1,0 +1,37 @@
+{
+  "title": "Quarterly Operations Report",
+  "eyebrow": "Report template",
+  "subtitle": "A Jinja-based report layout for compact, readable PDF summaries.",
+  "summary_cards": [
+    { "value": "94%", "label": "On-time completion", "accent": "accent-green" },
+    { "value": "12", "label": "Open actions", "accent": "accent-orange" },
+    { "value": "3", "label": "Escalations", "accent": "accent-red" }
+  ],
+  "sections": [
+    {
+      "heading": "Executive summary",
+      "body": [
+        "Performance remained stable through the quarter, with most milestones delivered on schedule and no major operational failures.",
+        "The main gap was uneven follow-through on a small number of cross-functional action items."
+      ]
+    },
+    {
+      "heading": "Key observations",
+      "items": [
+        "Turnaround time improved after template standardisation",
+        "Most avoidable delays came from incomplete handoff information",
+        "Escalations were concentrated in one workflow rather than spread evenly"
+      ],
+      "notice": "Recommendation: standardise intake fields before adding more reporting layers."
+    }
+  ],
+  "table": {
+    "title": "Priority actions",
+    "headers": ["Action", "Owner", "Status"],
+    "rows": [
+      ["Tighten intake checklist", "Ops", "In progress"],
+      ["Reduce duplicate review steps", "Clinical lead", "Planned"],
+      ["Publish template pack", "Design systems", "Done"]
+    ]
+  }
+}

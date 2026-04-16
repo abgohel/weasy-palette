@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-theme="{{ theme | default('light') }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <main>
+      <div class="document-header">
+        <span class="eyebrow">{{ eyebrow or 'Letter template' }}</span>
+        <h1>{{ title }}</h1>
+        {% if subtitle %}<p class="lead">{{ subtitle }}</p>{% endif %}
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">From</span>
+          <span class="meta-value">{{ sender_name }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">To</span>
+          <span class="meta-value">{{ recipient_name }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Date</span>
+          <span class="meta-value">{{ date }}</span>
+        </div>
+      </div>
+
+      {% if subject %}<p><strong>Subject:</strong> {{ subject }}</p>{% endif %}
+      {% if greeting %}<p>{{ greeting }}</p>{% endif %}
+
+      {% for paragraph in paragraphs %}
+      <p>{{ paragraph }}</p>
+      {% endfor %}
+
+      {% if bullets %}
+      <div class="card">
+        <strong>Key points</strong>
+        <ul>
+          {% for item in bullets %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if closing %}<p>{{ closing }}</p>{% endif %}
+      <p><strong>{{ sender_name }}</strong>{% if sender_role %}<br><span class="meta">{{ sender_role }}</span>{% endif %}</p>
+    </main>
+  </body>
+</html>

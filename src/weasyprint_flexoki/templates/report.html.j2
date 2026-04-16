@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-theme="{{ theme | default('light') }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <main>
+      <div class="document-header">
+        <span class="eyebrow">{{ eyebrow or 'Report template' }}</span>
+        <h1>{{ title }}</h1>
+        {% if subtitle %}<p class="lead">{{ subtitle }}</p>{% endif %}
+      </div>
+
+      {% if summary_cards %}
+      <div class="kpi-grid">
+        {% for card in summary_cards %}
+        <div class="kpi">
+          <span class="value {{ card['accent'] | default('accent-blue') }}">{{ card['value'] }}</span>
+          <span class="meta">{{ card['label'] }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if sections %}
+        {% for section in sections %}
+        {% set section_heading = section.get('heading') %}
+        {% set section_body = section.get('body') %}
+        {% set section_items = section.get('items') %}
+        {% set section_notice = section.get('notice') %}
+        <h2>{{ section_heading }}</h2>
+        {% if section_body %}
+          {% for paragraph in section_body %}
+          <p>{{ paragraph }}</p>
+          {% endfor %}
+        {% endif %}
+        {% if section_items %}
+        <ul>
+          {% for item in section_items %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% if section_notice %}
+        <div class="notice">{{ section_notice }}</div>
+        {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {% if table %}
+      <h2>{{ table['title'] }}</h2>
+      <table>
+        <thead>
+          <tr>
+            {% for header in table['headers'] %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in table['rows'] %}
+          <tr>
+            {% for cell in row %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </main>
+  </body>
+</html>

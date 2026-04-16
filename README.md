@@ -20,6 +20,7 @@ It is meant as a clean starting point for:
 - a reusable `flexoki.css` stylesheet tuned for PDF output
 - sample light and dark HTML documents
 - Markdown to PDF support built into the CLI
+- Jinja template support for letters and reports
 - a clinical brief example that is closer to real-world handout / summary work
 - a tiny CLI for rendering HTML to PDF with WeasyPrint
 - a small Python API you can call directly
@@ -34,12 +35,20 @@ pip install -e .
 weasyprint-flexoki examples/article-light.html dist/article-light.pdf
 weasyprint-flexoki examples/article-dark.html dist/article-dark.pdf
 weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief.pdf
+weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
+weasyprint-flexoki src/weasyprint_flexoki/templates/report.html.j2 dist/report.pdf --context examples/report-context.json
 ```
 
 Markdown input supports `--theme` and `--title`:
 
 ```bash
 weasyprint-flexoki examples/clinical-brief.md dist/clinical-brief-dark.pdf --theme dark --title "Clinical Brief"
+```
+
+Jinja template input supports `--context` with a JSON file:
+
+```bash
+weasyprint-flexoki src/weasyprint_flexoki/templates/letter.html.j2 dist/letter.pdf --context examples/letter-context.json
 ```
 
 ## Python usage
@@ -49,6 +58,11 @@ from weasyprint_flexoki import render_document_to_pdf
 
 render_document_to_pdf("examples/article-light.html", "dist/article-light.pdf")
 render_document_to_pdf("examples/clinical-brief.md", "dist/clinical-brief.pdf")
+render_document_to_pdf(
+    "src/weasyprint_flexoki/templates/report.html.j2",
+    "dist/report.pdf",
+    context_path="examples/report-context.json",
+)
 ```
 
 ## Project layout
@@ -63,10 +77,15 @@ weasyprint-flexoki/
 │   ├── article-dark.html
 │   ├── article-light.html
 │   └── clinical-brief.md
+│   ├── letter-context.json
+│   └── report-context.json
 ├── src/weasyprint_flexoki/
 │   ├── cli.py
 │   ├── flexoki.css
-│   └── render.py
+│   ├── render.py
+│   └── templates/
+│       ├── letter.html.j2
+│       └── report.html.j2
 └── pyproject.toml
 ```
 
@@ -85,6 +104,9 @@ This starter kit does **not** bundle the whole upstream repository. It includes 
 - `examples/article-light.html` for a light editorial page
 - `examples/article-dark.html` for an on-screen dark variant
 - `examples/clinical-brief.md` for a more practical one-page clinic / report layout
+- `src/weasyprint_flexoki/templates/letter.html.j2` for correspondence
+- `src/weasyprint_flexoki/templates/report.html.j2` for structured summaries
+- matching JSON context files in `examples/`
 
 ## Why this combo works
 

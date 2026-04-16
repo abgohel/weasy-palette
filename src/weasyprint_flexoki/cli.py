@@ -22,6 +22,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--title",
         help="Optional document title for Markdown input",
     )
+    parser.add_argument(
+        "--context",
+        help="Path to a JSON context file for Jinja template input",
+    )
     return parser
 
 
@@ -33,6 +37,7 @@ def main() -> None:
         Path(args.output_pdf),
         theme=args.theme,
         title=args.title,
+        context_path=args.context,
     )
     print(f"Rendered {output}")
 
