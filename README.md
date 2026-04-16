@@ -27,6 +27,7 @@ The result is a PDF style that feels:
 - **Jinja template support** for reusable documents
 - built-in example templates for **letters** and **reports**
 - sample **clinical brief** Markdown document
+- single-file **magazine-style HTML demo** with horizontal pagination
 - GitHub Actions workflow that renders examples on push and pull request
 
 ## Supported input types
@@ -105,6 +106,7 @@ render_document_to_pdf(
 ### HTML examples
 - `examples/article-light.html`
 - `examples/article-dark.html`
+- `examples/github-trending-magazine.html` (screen-first magazine demo)
 
 ### Markdown example
 - `examples/clinical-brief.md`
@@ -129,6 +131,7 @@ weasyprint-flexoki/
 │   ├── article-dark.html
 │   ├── article-light.html
 │   ├── clinical-brief.md
+│   ├── github-trending-magazine.html
 │   ├── letter-context.json
 │   ├── report-context.json
 │   └── template-render-demo.md
@@ -163,6 +166,7 @@ This setup works especially well for:
 - formal letters
 - compact summary reports
 - branded academic or medical PDFs
+- editorial HTML presentations and magazine-style browsing demos
 
 ## GitHub Actions
 
